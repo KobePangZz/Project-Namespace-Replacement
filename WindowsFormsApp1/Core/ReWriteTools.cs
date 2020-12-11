@@ -53,8 +53,9 @@ namespace WindowsFormsApp1.Core
                 // 三、如果文件中包含内容引用的dll（例如：lib文件夹中或自己定义的文件）
                 if (v.ToLower().EndsWith(".dll"))
                 {
-                    if (!File.Exists(newurl))
-                        System.IO.Directory.CreateDirectory(newurl);
+                    var dir = Path.GetDirectoryName(newurl);
+                    if (!Directory.Exists(dir))
+                        Directory.CreateDirectory(dir);
 
                     // 直接将文件从原位置拷贝过来
                     File.Copy(v, newurl, true);
@@ -85,8 +86,11 @@ namespace WindowsFormsApp1.Core
 
         public bool Save(string html, string url)
         {
-            if (!File.Exists(url))
-                System.IO.Directory.CreateDirectory(url);
+            var dir = Path.GetDirectoryName(url);
+            if (!Directory.Exists(dir))
+                System.IO.Directory.CreateDirectory(dir);
+            //if (!File.Exists(url))
+            //    System.IO.File.Create(url);
             System.IO.File.WriteAllText(url, html, Encoding.UTF8);
             return true;
         }
